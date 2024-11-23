@@ -18,8 +18,21 @@ const getSingleProcutFromDB = async (id:string) => {
   const result = await ProductModel.findById(id)
   return result;
 }
+//update products
+const updateProdutFromDB = async (id:string, update:IProduct) => {
+  const result = await ProductModel.findByIdAndUpdate(id, update)
+  return result;
+}
+
+//update products
+const deleteProdutFromDB = async (id:string) => {
+  const result = await ProductModel.findByIdAndDelete(id)
+  return result;
+}
 export const ProductServices = {
     createProcutIntoDB,
     getProcutFromDB,
     getSingleProcutFromDB,
+    updateProdutFromDB,
+    deleteProdutFromDB
 }

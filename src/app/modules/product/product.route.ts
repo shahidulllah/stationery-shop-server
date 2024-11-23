@@ -12,4 +12,10 @@ router.get('/', ProductController.getAllProducts);
 //get single product
 router.get('/:productId', ProductController.getSingleProduct);
 
+//update product
+router.put('/:productId', ProductController.updateProduct);
+
+//Delete product
+router.delete('/:productId', ProductController.deleteProduct);
+
 export const ProductRoutes = router;
