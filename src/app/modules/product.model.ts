@@ -18,6 +18,4 @@ const productSchema = new Schema<IProduct>({
 });
 
 //Staionary Product Model
-const Product = model<IProduct>('Product', productSchema)
-
-export default Product;
+export const ProductModel = model<IProduct>('Product', productSchema)
