@@ -1,5 +1,6 @@
-import { ProductModel } from "../product.model";
+
 import { IProduct } from "./product.interface";
+import { ProductModel } from "./product.model";
 
 //Create Product
 const createProcutIntoDB = async (product: IProduct) => {
@@ -24,11 +25,12 @@ const updateProdutFromDB = async (id:string, update:IProduct) => {
   return result;
 }
 
-//update products
+//delete products
 const deleteProdutFromDB = async (id:string) => {
   const result = await ProductModel.findByIdAndDelete(id)
   return result;
 }
+
 export const ProductServices = {
     createProcutIntoDB,
     getProcutFromDB,
