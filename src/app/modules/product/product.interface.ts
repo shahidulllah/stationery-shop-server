@@ -1,4 +1,3 @@
-
 export enum ProductCategory {
   Writing = 'Writing',
   OfficeSupplies = 'Office Supplies',

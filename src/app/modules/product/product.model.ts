@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IProduct, ProductCategory } from './product.interface';
 
-
 //Staionary Product Schema
 const productSchema = new Schema<IProduct>(
   {
