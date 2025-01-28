@@ -20,7 +20,7 @@ const getSingleProcutFromDB = async (id: string) => {
 };
 //update products
 const updateProdutFromDB = async (id: string, update: IProduct) => {
-  const result = await ProductModel.findByIdAndUpdate(id, update);
+  const result = await ProductModel.findByIdAndUpdate(id, update, {new: true});
   return result;
 };
 

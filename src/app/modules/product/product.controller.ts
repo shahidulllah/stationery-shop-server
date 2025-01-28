@@ -4,7 +4,7 @@ import { ProductServices } from './product.service';
 //Create  product
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const { products: productData } = req.body;
+    const  productData = req.body;
 
     //call service to send data
     const result = await ProductServices.createProcutIntoDB(productData);
@@ -89,7 +89,7 @@ const deleteProduct = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Product Deleted successfully',
-      data: result,
+      data: {},
     });
   } catch (err: any) {
     res.status(400).json({
