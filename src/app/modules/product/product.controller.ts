@@ -24,10 +24,39 @@ const createProduct = async (req: Request, res: Response) => {
 };
 
 //GetAll Products
+// const getAllProducts = async (req: Request, res: Response) => {
+//   try {
+//     const result = await ProductServices.getProcutFromDB();
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Products retrieved successfully',
+//       data: result,
+//     });
+//   } catch (err: any) {
+//     res.status(400).json({
+//       message: err.message || 'Somethign went wrong',
+//       status: false,
+//     });
+//   }
+// };
+
+// Get All Products (with optional search query for category, name, or brand)
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getProcutFromDB();
-
+    const searchTerm = req.query.searchTerm as string | undefined;
+    
+    const filter: any = {};
+    if (searchTerm) {
+      filter.$or = [
+        { category: { $regex: searchTerm, $options: 'i' } },
+        { name: { $regex: searchTerm, $options: 'i' } },
+        { brand: { $regex: searchTerm, $options: 'i' } }
+      ];
+    }
+    
+    const result = await ProductServices.getProcutFromDB(filter);
+    
     res.status(200).json({
       success: true,
       message: 'Products retrieved successfully',
@@ -35,7 +64,7 @@ const getAllProducts = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     res.status(400).json({
-      message: err.message || 'Somethign went wrong',
+      message: err.message || 'Something went wrong',
       status: false,
     });
   }

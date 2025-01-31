@@ -8,8 +8,8 @@ const createProcutIntoDB = async (product: IProduct) => {
 };
 
 //Get All Products
-const getProcutFromDB = async () => {
-  const result = await ProductModel.find();
+const getProcutFromDB = async (filter = {}) => {
+  const result = await ProductModel.find(filter);
   return result;
 };
 
