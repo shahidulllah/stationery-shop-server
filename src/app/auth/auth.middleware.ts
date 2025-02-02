@@ -4,7 +4,7 @@ import config from '../config';
 
 const SECRET_KEY = config.jwt_secret || 'secretkey';
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
   user?: any;
 }
 
