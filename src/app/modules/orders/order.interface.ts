@@ -5,4 +5,5 @@ export interface Iorder {
   product: Types.ObjectId;
   quantity: number;
   totalPrice: number;
+  status?: string
 }
