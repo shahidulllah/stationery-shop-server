@@ -52,6 +52,54 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
+//Update order
+const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: 'Status is required',
+      });
+    }
+
+    const result = await OrderServices.updateOrderStatusInDB(orderId, status);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order status updated successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || 'Failed to update order status',
+    });
+  }
+};
+
+//Delete orders
+const deleteOrder = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+
+    const result = await OrderServices.deleteOrderFromDB(orderId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order deleted successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || 'Failed to delete order',
+    });
+  }
+};
+
 //Calculate Rvenew
 const calculateRevenue = async (req: Request, res: Response) => {
   try {
@@ -76,4 +124,6 @@ export const OrderController = {
   createOrder,
   calculateRevenue,
   getAllOrders,
+  updateOrderStatus,
+  deleteOrder,
 };
