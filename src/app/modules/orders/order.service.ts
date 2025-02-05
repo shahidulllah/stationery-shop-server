@@ -24,6 +24,11 @@ const createOrderIntoDB = async (orderData: Iorder) => {
   return result;
 };
 
+//Get all orders
+const getAllOrdersFromDB = async (): Promise<Iorder[]> => {
+  const result = await OrderModel.find();
+  return result;
+};
 
 //Calculate revenw from DB
 const calculateRevenueFromDB = async (): Promise<number> => {
@@ -42,5 +47,6 @@ const calculateRevenueFromDB = async (): Promise<number> => {
 
 export const OrderServices = {
   createOrderIntoDB,
+  getAllOrdersFromDB,
   calculateRevenueFromDB,
 };

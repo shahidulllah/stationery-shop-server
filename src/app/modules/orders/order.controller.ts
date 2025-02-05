@@ -34,6 +34,24 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+//Get All orders
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const result = await OrderServices.getAllOrdersFromDB();
+
+    res.status(200).json({
+      success: true,
+      message: 'Orders fetched successfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || 'Failed to fetch orders',
+    });
+  }
+};
+
 //Calculate Rvenew
 const calculateRevenue = async (req: Request, res: Response) => {
   try {
@@ -56,5 +74,6 @@ const calculateRevenue = async (req: Request, res: Response) => {
 
 export const OrderController = {
   createOrder,
-  calculateRevenue
+  calculateRevenue,
+  getAllOrders,
 };
