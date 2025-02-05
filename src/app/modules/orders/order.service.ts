@@ -30,6 +30,12 @@ const getAllOrdersFromDB = async (): Promise<Iorder[]> => {
   return result;
 };
 
+//getOrdersByEmail
+const getOrdersByEmailFromDB = async (email: string): Promise<Iorder[]> => {
+  const result = await OrderModel.find({ email });
+  return result;
+};
+
 //Update orders
 const updateOrderStatusInDB = async (
   orderId: string,
@@ -68,5 +74,6 @@ export const OrderServices = {
   getAllOrdersFromDB,
   calculateRevenueFromDB,
   updateOrderStatusInDB,
-  deleteOrderFromDB
+  deleteOrderFromDB,
+  getOrdersByEmailFromDB,
 };
