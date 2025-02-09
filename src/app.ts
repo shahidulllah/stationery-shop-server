@@ -6,6 +6,7 @@ import authRoutes from './app/auth/auth.route';
 import dashboardRoutes from './app/dashboard/dashboard.route';
 import CartRoutes from './app/modules/cart/cart.route';
 import userRoutes from './app/modules/users/user.route';
+import paymentRoutes from './app/modules/payment/payment.route';
 
 const app: Application = express();
 
@@ -25,6 +26,7 @@ app.use('/api/cart', CartRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/payments', paymentRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to my Stationary shop');
