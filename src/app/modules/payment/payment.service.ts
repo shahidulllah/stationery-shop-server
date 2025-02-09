@@ -1,10 +1,18 @@
-import Stripe from "stripe";
-import { Payment } from "./payment.model";
+import Stripe from 'stripe';
+import { Payment } from './payment.model';
+import config from '../../config';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+const stripe = new Stripe(config.stripe_secret_key as string);
 
-export const createPaymentIntent = async (userId: string, amount: number, currency: string) => {
-  const paymentIntent = await stripe.paymentIntents.create({ amount, currency });
+export const createPaymentIntent = async (
+  userId: string,
+  amount: number,
+  currency: string,
+) => {
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount,
+    currency,
+  });
 
   const newPayment = new Payment({
     userId,
@@ -20,10 +28,10 @@ export const createPaymentIntent = async (userId: string, amount: number, curren
 export const confirmPayment = async (paymentIntentId: string) => {
   const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-  if (paymentIntent.status === "succeeded") {
+  if (paymentIntent.status === 'succeeded') {
     await Payment.findOneAndUpdate(
       { paymentIntentId },
-      { paymentStatus: "successful" }
+      { paymentStatus: 'successful' },
     );
   }
 
