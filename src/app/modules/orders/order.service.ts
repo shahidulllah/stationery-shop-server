@@ -1,7 +1,6 @@
 import { Iorder } from './order.interface';
 import { OrderModel } from './order.model';
 
-
 //Get all orders
 const getAllOrdersFromDB = async (): Promise<Iorder[]> => {
   const result = await OrderModel.find();
@@ -10,7 +9,7 @@ const getAllOrdersFromDB = async (): Promise<Iorder[]> => {
 
 //getOrdersById
 const getOrderByIdFromDB = async (orderId: string): Promise<Iorder | null> => {
-  const result = await OrderModel.findById( orderId);
+  const result = await OrderModel.findById(orderId);
   return result;
 };
 
