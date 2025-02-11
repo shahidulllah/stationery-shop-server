@@ -9,8 +9,8 @@ router.post('/', OrderController.createOrder);
 // Fetch all orders
 router.get('/', OrderController.getAllOrders);
 
-// Fetch orders by email
-router.get('/by-email', OrderController.getOrdersByEmail);
+// Fetch orders by id
+router.get('/:orderId', OrderController.getOrderById);
 
 // Update order status
 router.patch('/:orderId', OrderController.updateOrderStatus);

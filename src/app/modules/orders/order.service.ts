@@ -1,28 +1,6 @@
-import { ProductModel } from '../product/product.model';
 import { Iorder } from './order.interface';
 import { OrderModel } from './order.model';
 
-//Create Product
-const createOrderIntoDB = async (orderData: Iorder) => {
-  const product = await ProductModel.findById(orderData.product);
-
-  if (!product) {
-    throw new Error('Product not found');
-  }
-
-  if (product.quantity < orderData.quantity) {
-    throw new Error('Insufficient stock available');
-  }
-
-  product.quantity -= orderData.quantity;
-  if (product.quantity === 0) {
-    product.inStock = false;
-  }
-  await product.save();
-
-  const result = await OrderModel.create(orderData);
-  return result;
-};
 
 //Get all orders
 const getAllOrdersFromDB = async (): Promise<Iorder[]> => {
@@ -30,9 +8,9 @@ const getAllOrdersFromDB = async (): Promise<Iorder[]> => {
   return result;
 };
 
-//getOrdersByEmail
-const getOrdersByEmailFromDB = async (email: string): Promise<Iorder[]> => {
-  const result = await OrderModel.find({ email });
+//getOrdersById
+const getOrderByIdFromDB = async (orderId: string): Promise<Iorder | null> => {
+  const result = await OrderModel.findById( orderId);
   return result;
 };
 
@@ -70,10 +48,9 @@ const calculateRevenueFromDB = async (): Promise<number> => {
 };
 
 export const OrderServices = {
-  createOrderIntoDB,
   getAllOrdersFromDB,
   calculateRevenueFromDB,
   updateOrderStatusInDB,
   deleteOrderFromDB,
-  getOrdersByEmailFromDB,
+  getOrderByIdFromDB,
 };

@@ -4,7 +4,7 @@ import { ProductServices } from './product.service';
 //Create  product
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const  productData = req.body;
+    const productData = req.body;
 
     //call service to send data
     const result = await ProductServices.createProcutIntoDB(productData);
@@ -23,40 +23,32 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-//GetAll Products
-// const getAllProducts = async (req: Request, res: Response) => {
-//   try {
-//     const result = await ProductServices.getProcutFromDB();
-
-//     res.status(200).json({
-//       success: true,
-//       message: 'Products retrieved successfully',
-//       data: result,
-//     });
-//   } catch (err: any) {
-//     res.status(400).json({
-//       message: err.message || 'Somethign went wrong',
-//       status: false,
-//     });
-//   }
-// };
-
-// Get All Products (with optional search query for category, name, or brand)
+//Get all products
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const searchTerm = req.query.searchTerm as string | undefined;
-    
-    const filter: any = {};
+    const minPrice = parseFloat(req.query.minPrice as string) || 0;
+    const maxPrice = parseFloat(req.query.maxPrice as string) || Infinity;
+    const onlyAvailable = req.query.onlyAvailable === 'true';
+
+    const filter: any = {
+      price: { $gte: minPrice, $lte: maxPrice }, 
+    };
+
+    if (onlyAvailable) {
+      filter.stock = { $gt: 0 }; 
+    }
+
     if (searchTerm) {
       filter.$or = [
         { category: { $regex: searchTerm, $options: 'i' } },
         { name: { $regex: searchTerm, $options: 'i' } },
-        { brand: { $regex: searchTerm, $options: 'i' } }
+        { brand: { $regex: searchTerm, $options: 'i' } },
       ];
     }
-    
-    const result = await ProductServices.getProcutFromDB(filter);
-    
+
+    const result = await ProductServices.getProductFromDB(filter);
+
     res.status(200).json({
       success: true,
       message: 'Products retrieved successfully',

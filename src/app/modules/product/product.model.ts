@@ -15,6 +15,7 @@ const productSchema = new Schema<IProduct>(
     description: { type: String, required: true },
     quantity: { type: Number, required: true, min: 0 },
     inStock: { type: Boolean, required: true, default: true },
+    image: {type: String},
   },
   {
     timestamps: true,

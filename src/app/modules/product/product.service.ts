@@ -8,7 +8,7 @@ const createProcutIntoDB = async (product: IProduct) => {
 };
 
 //Get All Products
-const getProcutFromDB = async (filter = {}) => {
+const getProductFromDB = async (filter = {}) => {
   const result = await ProductModel.find(filter);
   return result;
 };
@@ -32,7 +32,7 @@ const deleteProdutFromDB = async (id: string) => {
 
 export const ProductServices = {
   createProcutIntoDB,
-  getProcutFromDB,
+  getProductFromDB,
   getSingleProcutFromDB,
   updateProdutFromDB,
   deleteProdutFromDB,

@@ -1,26 +1,51 @@
 import { Request, Response } from 'express';
 import { OrderServices } from './order.service';
+import { ProductModel } from '../product/product.model';
+import { OrderModel } from './order.model';
 
 //Create  Order
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const { email, product, quantity, totalPrice } = req.body;
+    const { email, products, totalPrice, paymentIntentId } = req.body;
 
-    if (!email || !product || !quantity || !totalPrice) {
+    if (!email || !products || !totalPrice || !paymentIntentId) {
       return res.status(400).json({
         success: false,
-        message: 'All fields are needed',
+        message: 'All fields are required',
       });
     }
 
-    const result = await OrderServices.createOrderIntoDB({
+    // Validate product quantities and update stock
+    for (const item of products) {
+      const product = await ProductModel.findById(item.product);
+      if (!product) {
+        return res.status(400).json({
+          success: false,
+          message: `Product ${item.product} not found`,
+        });
+      }
+      if (product.quantity < item.quantity) {
+        return res.status(400).json({
+          success: false,
+          message: `Insufficient stock for product ${item.product}`,
+        });
+      }
+      product.quantity -= item.quantity;
+      if (product.quantity === 0) {
+        product.inStock = false;
+      }
+      await product.save();
+    }
+
+    const result = await OrderModel.create({
       email,
-      product,
-      quantity,
+      products,
       totalPrice,
+      paymentStatus: 'Paid',
+      paymentIntentId,
+      status: 'Processing',
     });
 
-    //send response
     res.status(200).json({
       success: true,
       message: 'Order created successfully',
@@ -52,19 +77,19 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
-//Get Orders by Email
-const getOrdersByEmail = async (req: Request, res: Response) => {
+//Get Order by id
+const getOrderById = async (req: Request, res: Response) => {
   try {
-    const { email } = req.query;
+    const { orderId } = req.params;
 
-    if (!email) {
+    if (!orderId) {
       return res.status(400).json({
         success: false,
-        message: 'Email is required',
+        message: 'Order ID is required',
       });
     }
 
-    const result = await OrderServices.getOrdersByEmailFromDB(email as string);
+    const result = await OrderServices.getOrderByIdFromDB(orderId as string);
 
     res.status(200).json({
       success: true,
@@ -153,5 +178,5 @@ export const OrderController = {
   getAllOrders,
   updateOrderStatus,
   deleteOrder,
-  getOrdersByEmail
+  getOrderById,
 };
