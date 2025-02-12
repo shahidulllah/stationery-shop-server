@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response) => {
 // Get all users
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.find().select('-password'); // Exclude password from response
+    const users = await User.find().select('-password');
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching users' });
