@@ -31,6 +31,28 @@ export const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+//Update user
+export const updateUserProfile = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const { name, shippingAddress, image } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, shippingAddress, image },
+      { new: true },
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating profile' });
+  }
+};
+
 // Update user role
 export const updateUserRole = async (req: Request, res: Response) => {
   const { userId } = req.params;
